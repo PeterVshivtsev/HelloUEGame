@@ -1,5 +1,6 @@
 #include "Core/MyPlayerController.h"
 #include "Core/MyCharacter.h"
+#include "InputCoreTypes.h"
 
 AMyPlayerController::AMyPlayerController() {
 	bShowMouseCursor = false;
@@ -14,7 +15,7 @@ void AMyPlayerController::BeginPlay() {
 
 void AMyPlayerController::SetupInputComponent() {
 	Super::SetupInputComponent();
-
+	
 	InputComponent->BindAction("MoveForward", IE_Pressed, this, &AMyPlayerController::onWPressed);
 	InputComponent->BindAction("MoveForward", IE_Released, this, &AMyPlayerController::onWReleased);
 
@@ -26,6 +27,9 @@ void AMyPlayerController::SetupInputComponent() {
 
 	InputComponent->BindAction("MoveRight", IE_Pressed, this, &AMyPlayerController::onDPressed);
 	InputComponent->BindAction("MoveRight", IE_Released, this, &AMyPlayerController::onDReleased);
+
+
+	InputComponent->BindKey(EKeys::I, IE_Pressed, _myCharacter, &AMyCharacter::characterLogInfo);
 }
 
 void AMyPlayerController::Tick(float DeltaTime) {
@@ -40,19 +44,19 @@ void AMyPlayerController::Tick(float DeltaTime) {
 	}
 
 	if (_bWPressed) {
-		_myCharacter->setPlayerPosX(_myCharacter ->playerPosX() + _myCharacter->playerMoveSpeed());
+		_myCharacter->movePlayerForward();
 	}
 
 	if (_bSPressed) {
-		_myCharacter->setPlayerPosX(_myCharacter->playerPosX() - _myCharacter->playerMoveSpeed());
+		_myCharacter->movePlayerBackward();
 	}
 
 	if (_bAPressed) {
-		_myCharacter->setPlayerPosY(_myCharacter->playerPosY() - _myCharacter->playerMoveSpeed());
+		_myCharacter->movePlayerLeft();
 	}
 
 	if (_bDPressed) {
-		_myCharacter->setPlayerPosY(_myCharacter->playerPosY() + _myCharacter->playerMoveSpeed());
+		_myCharacter->movePlayerRight();
 	}
 }
 
